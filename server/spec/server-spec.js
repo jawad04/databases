@@ -16,7 +16,7 @@ describe('Persistent Node Chat Server', function() {
     });
     dbConnection.connect();
 
-       var tablename = ""; // TODO: fill this out
+    var tablename = "messages"; // TODO: fill this out
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
@@ -26,7 +26,7 @@ describe('Persistent Node Chat Server', function() {
   afterEach(function() {
     dbConnection.end();
   });
-
+  
   it('Should insert posted messages to the DB', function(done) {
     // Post the user to the chat server.
     request({
@@ -67,8 +67,8 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-       var queryString = "";
-       var queryArgs = [];
+    var queryString = "";
+    var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
     // them up to you. */
