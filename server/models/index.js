@@ -7,7 +7,7 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {  
-      var query = "SELECT * FROM messages";
+      var query = "SELECT * FROM messages;";
       db.query(query, function(error, results) {
         if (error) {
           callback(error);
@@ -17,16 +17,20 @@ module.exports = {
       });
 
     }, // a function which produces all the messages
-    post: function (callback) {
+    post: function (reqBody, callback) {
     //   //dbConnection.query(queryString, queryArgs, function(err, results) {
-      var query = "INSERT INTO messages (id, username, text, roomname)";
+      console.log('AT MESSAGES POST');
+      var username = reqBody.username;
+      var text = reqBody.message;
+      var roomname = reqBody.roomname;
+      var query = `INSERT INTO messages (username, text, roomname) VALUES (?, ?, ?);`;
       
-      db.query(query, function(error, results) {
+      console.log(query);
+      db.query(query, [username, text, roomname], function(error, results) {
         if (error) {
-          console.log('error encountered');
-          return;
+          callback(error);
         }
-        return results;
+          callback(results);
       });
     } // a function which can be used to insert a message into the database
   },
@@ -34,7 +38,7 @@ module.exports = {
   users: {
     // Ditto as above.
     get: function (callback) {
-      var query = "SELECT * from users";
+      var query = "SELECT * from users;";
 
       db.query(query, function(error, results) {
         if (error) {
@@ -45,10 +49,11 @@ module.exports = {
       });
 
     },
-    post: function (callback) {
-      var query = "INSERT INTO users (username) values ('JJ')";
-
-      db.query(query, function(error, results) {
+    post: function (reqBody, callback) {
+      var query = "INSERT INTO users (username) values (?);";   
+      var username = reqBody.username;
+      
+      db.query(query, username, function(error, results) {
         if (error) {
           callback(error);
         } else {
@@ -59,4 +64,4 @@ module.exports = {
   }
 };
 
-module.exports.messages.get((result) => console.log(result));
+module.exports.messages.get((result) => console.log('RESULTS: ', result));
